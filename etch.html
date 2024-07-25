@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body{
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: grey  ;
+    }
+
+    .container{
+        display: flex;
+        border: solid black 1px;
+        flex-wrap: wrap;
+        height: 600px;
+        width: 600px;
+        background-color: rgb(8, 33, 55);
+    }
+
+    .totalGrid{
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .totalGrid input {
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+
+    #eraser{
+        margin-left: 5px;
+    }
+
+
+</style>
+
+<body>
+
+<div class="container">
+
+</div>
+<br><br>
+<div class="totalGrid">
+    <label>Total Grid(1-99):</label>
+    <input type="text" id="gridn">
+    <button id="clickme">submit</button>
+    <button id="eraser">reset</button>
+</div>
+
+
+
+
+<script>
+let box,num;
+
+const numGrid = document.querySelector("#gridn");
+const submit = document.querySelector("#clickme");
+const reset = document.querySelector("#eraser");
+submit.addEventListener("click", ()=>{
+    num = numGrid.value;
+    if(num>=100){
+        alert("grid cannot be more than 100!");
+    }else{
+    createGrid(num, num);
+    }
+})
+
+reset.addEventListener("click", ()=>{
+    num = numGrid.value;
+    if(num==0){
+        createGrid(16, 16);
+    }else{
+        createGrid(num, num);
+    }
+})
+
+function getRandomRGB() {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `rgb(${r}, ${g}, ${b})`;
+}
+
+function createGrid(row, col){
+    const maingrid = document.querySelector(".container");
+    const gridSize = maingrid.clientWidth / col;
+    maingrid.innerHTML = '';
+    for(box = 0;box < row * col;box++){
+        const grid = document.createElement("div");
+        grid.style.width = `${gridSize}px`;
+        grid.style.height = `${gridSize}px`;
+        grid.style.boxSizing = "border-box";
+        //grid.style.border = "1px solid blue";
+        grid.className = "box";
+
+        maingrid.appendChild(grid);
+    }
+    const hover = document.querySelectorAll(".box");
+    
+    hover.forEach(box=>{
+        box.addEventListener('mouseenter', (event)=>{
+            if (isMouseDown) {
+                event.target.style.backgroundColor = getRandomRGB();
+            }
+        });
+    });
+
+}
+
+createGrid(16, 16);
+
+document.body.addEventListener('mousedown', () => {
+    isMouseDown = true;
+});
+
+document.body.addEventListener('mouseup', () => {
+    isMouseDown = false;
+});
+
+    
+
+
+
+</script>
+
+</body>
+</html>
+
